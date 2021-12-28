@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "https://netflix-hqlinh.herokuapp.com/api/";
+const { API_FRONTEND_URL } = process.env;
 
 export const userRequest = axios.create({
-  base_URL: BASE_URL,
+  base_URL: API_FRONTEND_URL,
 });
