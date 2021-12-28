@@ -1,0 +1,9 @@
+.home {
+  background-color: var(--main-color);
+  overflow: hidden;
+
+  .lists {
+    border-bottom: 8px solid rgb(34, 34, 34);
+    padding-bottom: 10px;
+  }
+}
