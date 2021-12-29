@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const { API_FRONTEND_URL } = process.env;
+const { API_URL } = process.env;
+console.log(API_URL)
 
 export const userRequest = axios.create({
-  base_URL: API_FRONTEND_URL,
+  base_URL: API_URL,
 });
