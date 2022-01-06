@@ -8,22 +8,31 @@ import {
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function ListItem({ index, item }) {
   const [isHovered, setIsHovered] = useState(false);
   const [movie, setMovie] = useState({});
+  const { accessToken } = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     const getMovie = async () => {
       try {
-        const res = await axios.get("/movies/find/" + item);
+        const res = await axios.get(
+          "http://localhost:5000/api/movies/find/" + item,
+          {
+            headers: {
+              token: accessToken,
+            },
+          }
+        );
         setMovie(res.data);
       } catch (err) {
         console.log("Let's Login!");
       }
     };
     getMovie();
-  }, [item]);
+  }, [item, accessToken]);
 
   return (
     <Link to={{ pathname: "/watch", movie: movie }}>
