@@ -1,9 +1,10 @@
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { useRef } from "react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./register.scss";
+import { userRequest } from "../../requestMethods";
+
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -23,7 +24,7 @@ export default function Register() {
     setPassword(passwordRef.current.value);
     setUsername(usernameRef.current.value);
     try {
-      await axios.post("http://localhost:5000/api/auth/register", { email, username, password });
+      await userRequest.post("/auth/register", { email, username, password });
       history.push("/login");
     } catch (err) {
       console.log(err)

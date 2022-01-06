@@ -1,8 +1,8 @@
 import { InfoOutlined, PlayArrow } from "@material-ui/icons";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import "./featured.scss";
 import { useSelector } from "react-redux";
+import { userRequest } from "../../requestMethods";
 
 export default function Featured({ type, setGenre }) {
   const [content, setContent] = useState({});
@@ -11,8 +11,8 @@ export default function Featured({ type, setGenre }) {
   useEffect(() => {
     const getRandomContent = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/movies/random?type=${type}`,
+        const res = await userRequest.get(
+          `/movies/random?type=${type}`,
           { headers: { token: accessToken } }
         );
         setContent(res.data[0]);

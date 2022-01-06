@@ -6,9 +6,9 @@ import {
   ThumbDownOutlined,
 } from "@material-ui/icons";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { userRequest } from "../../requestMethods";
 
 export default function ListItem({ index, item }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -18,8 +18,8 @@ export default function ListItem({ index, item }) {
   useEffect(() => {
     const getMovie = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:5000/api/movies/find/" + item,
+        const res = await userRequest.get(
+          "/movies/find/" + item,
           {
             headers: {
               token: accessToken,
