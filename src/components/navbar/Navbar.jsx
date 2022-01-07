@@ -4,13 +4,23 @@ import { Notifications } from "@material-ui/icons";
 import { ArrowDropDown } from "@material-ui/icons";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { logout } from "../../redux/apiCalls";
+import { useSelector, useDispatch } from "react-redux";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const accessToken = user?.accessToken;
+  const userId = user?._id;
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
     return () => (window.onscroll = null);
+  };
+
+  const handleLogout = () => {
+    logout(dispatch, { accessToken, userId });
   };
   return (
     <div className={isScrolled ? "navbar scrolled" : "navbar"}>
@@ -45,7 +55,7 @@ const Navbar = () => {
             <ArrowDropDown className="icon" />
             <div className="options">
               <span>Setting</span>
-              <span>Logout</span>
+              <span onClick={handleLogout}>Logout</span>
             </div>
           </div>
         </div>

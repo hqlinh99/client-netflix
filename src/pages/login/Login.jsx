@@ -3,12 +3,13 @@ import { useState } from "react";
 import { login } from "../../redux/apiCalls";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-
+  const { error } = useSelector((state) => state.user);
   const handleClick = (e) => {
     e.preventDefault();
     login(dispatch, { email, password });
@@ -27,6 +28,9 @@ export default function Login() {
       </div>
       <div className="container">
         <form>
+          <div className="notify" style={{ color: "#FF0000" }}>
+            {error}
+          </div>
           <h1>Sign In</h1>
           <input
             type="email"
