@@ -12,7 +12,7 @@ const authReducer = (state = initialState, action) => {
     case REHYDRATE:
       return {
         ...state,
-        currentUser: action.payload.authData.currentUser,
+        currentUser: action.payload?.authData?.currentUser,
       };
 
     //LOGIN
