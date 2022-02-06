@@ -1,35 +1,44 @@
-import { Link } from "react-router-dom";
-import { useRef } from "react";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
 import "./register.scss";
-import { userRequest } from "../../requestMethods";
-
+import { Link } from "react-router-dom";
+import Loading from "../../images/Spinner-1s-200px.svg";
+import { useRef, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import action from "../../redux/users/actions/usersActions";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Register() {
+  const dispatch = useDispatch();
+  const { isLoading, errorMessage, user } = useSelector((state) => state.userData);
+
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const history = useHistory();
 
   const emailRef = useRef();
-  const passwordRef = useRef();
-  const usernameRef = useRef();
 
   const handleStart = () => {
     setEmail(emailRef.current.value);
   };
+
   const handleFinish = async (e) => {
     e.preventDefault();
-    setPassword(passwordRef.current.value);
-    setUsername(usernameRef.current.value);
-    try {
-      await userRequest.post("/auth/register", { email, username, password });
-      history.push("/login");
-    } catch (err) {
-      console.log(err)
-    }
+    dispatch(action.createUserStart({ email, username, password }));
   };
+
+  if (user?.newUser) {
+    history.push("/login");
+  }
+
+  if (errorMessage?.slice(0, 7) === '"email"') {
+    setTimeout(() => {
+      history.go(0);
+    }, 3000);
+  }
+
+  useEffect(() => {
+    dispatch(action.clearUserStart());
+  }, [dispatch]);
 
   return (
     <div className="register">
@@ -54,21 +63,36 @@ export default function Register() {
           Ready to watch? Enter your email to create or restart your membership.
         </p>
         {!email ? (
-          <div className="input">
+          <div className="inputGetStarted">
             <input type="email" placeholder="email address" ref={emailRef} />
             <button className="registerButton" onClick={handleStart}>
               Get Started
             </button>
           </div>
         ) : (
-          <form className="input">
-            <input type="username" placeholder="username" ref={usernameRef} />
-            <input type="password" placeholder="password" ref={passwordRef} />
+          <form className="inputStart">
+            <input
+              type="username"
+              placeholder="username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <button className="registerButton" onClick={handleFinish}>
-              Start
+              {isLoading === true ? (
+                <img style={{ width: "40px" }} src={Loading} alt="loading..." />
+              ) : (
+                "Sign In"
+              )}
             </button>
           </form>
         )}
+        <div className="notify" style={{ color: "#FF0000" }}>
+          {errorMessage}
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,8 @@
+const actionTypes = {
+  //GetRandom
+  GET_LISTS_RANDOM_START: "GET_LISTS_RANDOM_START",
+  GET_LISTS_RANDOM_SUCCESS: "GET_LISTS_RANDOM_SUCCESS",
+  GET_LISTS_RANDOM_ERROR: "GET_LISTS_RANDOM_ERROR",
+};
+
+export default actionTypes;

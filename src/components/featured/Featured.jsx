@@ -1,27 +1,18 @@
 import { InfoOutlined, PlayArrow } from "@material-ui/icons";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./featured.scss";
-import { useSelector } from "react-redux";
-import { userRequest } from "../../requestMethods";
+import { useSelector, useDispatch } from "react-redux";
+import action from "../../redux/movies/actions/moviesActions";
+import { axiosPrivate } from "../../server/requestMethods";
 
 export default function Featured({ type, setGenre }) {
-  const [content, setContent] = useState({});
-  const { accessToken } = useSelector((state) => state.user.currentUser);
+  const { accessToken } = useSelector((state) => state.authData.currentUser);
+  const movieRandom = useSelector((state) => state.movieData.random);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const getRandomContent = async () => {
-      try {
-        const res = await userRequest.get(
-          `/movies/random?type=${type}`,
-          { headers: { token: accessToken } }
-        );
-        setContent(res.data[0]);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getRandomContent();
-  }, [type, accessToken]);
+    dispatch(action.getMovieRandomStart({ type, accessToken, axiosPrivate }));
+  }, [dispatch, type, accessToken]);
 
   return (
     <div className="featured">
@@ -50,10 +41,10 @@ export default function Featured({ type, setGenre }) {
           </select>
         </div>
       )}
-      <img src={content?.img} alt="" />
+      <img src={movieRandom?.img} alt="" />
       <div className="info">
-        <img width="100%" src={content?.imgTitle} alt="" />
-        <span className="desc">{content?.desc}</span>
+        <img width="100%" src={movieRandom?.imgTitle} alt="" />
+        <span className="desc">{movieRandom?.desc}</span>
         <div className="buttons">
           <button className="play">
             <PlayArrow />

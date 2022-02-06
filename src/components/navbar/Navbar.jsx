@@ -4,15 +4,17 @@ import { Notifications } from "@material-ui/icons";
 import { ArrowDropDown } from "@material-ui/icons";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { logout } from "../../redux/apiCalls";
 import { useSelector, useDispatch } from "react-redux";
+import action from "../../redux/auth/actions/authActions";
+import { axiosPrivate } from "../../server/requestMethods";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const user = useSelector((state) => state.user.currentUser);
+  const { currentUser } = useSelector((state) => state.authData);
+  const userId = currentUser?._id;
+  const accessToken = currentUser?.accessToken;
+
   const dispatch = useDispatch();
-  const accessToken = user?.accessToken;
-  const userId = user?._id;
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
@@ -20,7 +22,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    logout(dispatch, { accessToken, userId });
+    dispatch(action.logoutUserStart({ accessToken, userId, axiosPrivate }));
   };
   return (
     <div className={isScrolled ? "navbar scrolled" : "navbar"}>
@@ -35,10 +37,10 @@ const Navbar = () => {
           </Link>
 
           <Link to="/series" className="link">
-            <span>Series</span>
+            <span className="navbarMainLink">Series</span>
           </Link>
           <Link to="/movies" className="link">
-            <span>Movie</span>
+            <span className="navbarMainLink">Movie</span>
           </Link>
           <span>New and Popular</span>
           <span>My list</span>
@@ -47,10 +49,7 @@ const Navbar = () => {
           <Search className="icon" />
           <span>KID</span>
           <Notifications className="icon" />
-          <img
-            src="https://a-static.besthdwallpaper.com/oblivion-movie-poster-wallpaper-2048x1152-11407_49.jpg"
-            alt=""
-          />
+          <img src={currentUser?.profilePic} alt="profilePic" />
           <div className="profile">
             <ArrowDropDown className="icon" />
             <div className="options">

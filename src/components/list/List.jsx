@@ -9,7 +9,7 @@ import "./list.scss";
 export default function List({ list }) {
   const [isMoved, setIsMoved] = useState(false);
   const [slideNumber, setSlideNumber] = useState(0);
-  const [clickLimit, setClickLimit] = useState(window.innerWidth / 230);
+  const clickLimit = useState(window.innerWidth / 230);
 
   const listRef = useRef();
 
@@ -35,7 +35,7 @@ export default function List({ list }) {
           onClick={() => handleClick("left")}
           style={{ display: !isMoved && "none" }}
         />
-        <div className="container" ref={listRef}>
+        <div className="container" ref={listRef} key={list}>
           {list.content.map((item, i) => (
             <ListItem index={i} item={item} />
           ))}

@@ -1,19 +1,25 @@
 import "./login.scss";
-import { useState } from "react";
-import { login } from "../../redux/apiCalls";
+import Loading from "../../images/Spinner-1s-200px.svg";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import authActions from "../../redux/auth/actions/authActions";
+import usersActions from "../../redux/users/actions/usersActions";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { error } = useSelector((state) => state.user);
+  const { isLoading, errorMessage } = useSelector((state) => state.userData);
   const handleClick = (e) => {
     e.preventDefault();
-    login(dispatch, { email, password });
+    dispatch(authActions.loginUserStart({ email, password }));
   };
+
+  useEffect(() => {
+    dispatch(usersActions.clearUserStart());
+  }, [dispatch]);
 
   return (
     <div className="login">
@@ -28,10 +34,10 @@ export default function Login() {
       </div>
       <div className="container">
         <form>
-          <div className="notify" style={{ color: "#FF0000" }}>
-            {error}
-          </div>
           <h1>Sign In</h1>
+          <div className="notify" style={{ color: "#FF0000" }}>
+            {errorMessage}
+          </div>
           <input
             type="email"
             placeholder="Email or username"
@@ -43,9 +49,12 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button className="loginButton" onClick={handleClick}>
-            Sign In
+            {isLoading === true ? (
+              <img style={{ width: "40px" }} src={Loading} alt="loading..." />
+            ) : (
+              "Sign In"
+            )}
           </button>
-
           <span>
             New to Netflix? &nbsp;
             <Link to="/register" className="link">

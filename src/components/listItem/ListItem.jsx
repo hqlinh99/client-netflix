@@ -7,32 +7,43 @@ import {
 } from "@material-ui/icons";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { userRequest } from "../../requestMethods";
+import { useSelector, useDispatch } from "react-redux";
+import action from "../../redux/movies/actions/moviesActions";
+import { axiosPublic, axiosPrivate } from "../../server/requestMethods";
 
 export default function ListItem({ index, item }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [movie, setMovie] = useState({});
-  const { accessToken } = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const { accessToken } = useSelector((state) => state.authData.currentUser);
 
+  const [movie, setMovie] = useState();
   useEffect(() => {
     const getMovie = async () => {
       try {
-        const res = await userRequest.get(
-          "/movies/find/" + item,
-          {
-            headers: {
-              token: accessToken,
-            },
-          }
-        );
+        const res = await axiosPrivate.get("/movies/find/" + item, {
+          headers: {
+            token: accessToken,
+          },
+        });
         setMovie(res.data);
       } catch (err) {
-        console.log("Let's Login!");
+        console.log(err.response);
       }
     };
     getMovie();
   }, [item, accessToken]);
+
+  // const { movie } = useSelector((state) => state.movies);
+  // useEffect(() => {
+  //   const getMovie = async () => {
+  //     try {
+  //       dispatch(action.getMoviesStart({ item, accessToken }));
+  //     } catch (err) {
+  //       console.log(err.response);
+  //     }
+  //   };
+  //   getMovie();
+  // }, [dispatch, index, item, accessToken]);
 
   return (
     <Link to={{ pathname: "/watch", movie: movie }}>
@@ -42,7 +53,7 @@ export default function ListItem({ index, item }) {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <img src={movie?.imgSm} alt="" />
+        <img src={movie?.imgSm} alt="imgSm" />
         {isHovered && (
           <>
             <video src={movie?.trailer} autoPlay={true} loop />

@@ -13,22 +13,22 @@ import {
 import { useSelector } from "react-redux";
 
 const App = () => {
-  const user = useSelector((state) => state.user.currentUser?._id);
+  const auth = useSelector((state) => state.authData.currentUser?._id);
   return (
     <Router>
-      <Switch>
-        <Route exact path="/">
-          {user ? <Home /> : <Redirect to="/register" />}
-        </Route>
+      <Route path="/register">
+        {!auth ? <Register /> : <Redirect to="/" />}
+      </Route>
 
-        <Route path="/register">
-          {!user ? <Register /> : <Redirect to="/" />}
-        </Route>
+      <Route path="/login">{!auth ? <Login /> : <Redirect to="/" />}</Route>
 
-        <Route path="/login">{!user ? <Login /> : <Redirect to="/" />}</Route>
+      {auth ? (
+        <>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
 
-        {user && (
-          <>
             <Route path="/movies">
               <Home type="movie" />
             </Route>
@@ -40,9 +40,11 @@ const App = () => {
             <Route path="/watch">
               <Watch />
             </Route>
-          </>
-        )}
-      </Switch>
+          </Switch>
+        </>
+      ) : (
+        <Redirect to="/login" />
+      )}
     </Router>
   );
 };
