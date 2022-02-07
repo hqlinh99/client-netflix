@@ -16,15 +16,17 @@ const App = () => {
   const auth = useSelector((state) => state.authData.currentUser?._id);
   return (
     <Router>
-      <Route path="/register">
-        {!auth ? <Register /> : <Redirect to="/" />}
-      </Route>
+      <Switch>
+        <Route path="/register">
+          {!auth ? <Register /> : <Redirect to="/" />}
+        </Route>
 
-      <Route path="/login">{!auth ? <Login /> : <Redirect to="/" />}</Route>
+        <Route path="/login">
+          <Login />
+        </Route>
 
-      {auth ? (
-        <>
-          <Switch>
+        {auth ? (
+          <>
             <Route exact path="/">
               <Home />
             </Route>
@@ -40,11 +42,11 @@ const App = () => {
             <Route path="/watch">
               <Watch />
             </Route>
-          </Switch>
-        </>
-      ) : (
-        <Redirect to="/login" />
-      )}
+          </>
+        ) : (
+          <Redirect to="/login" />
+        )}
+      </Switch>
     </Router>
   );
 };

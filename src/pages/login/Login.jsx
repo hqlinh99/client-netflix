@@ -2,7 +2,7 @@ import "./login.scss";
 import Loading from "../../images/Spinner-1s-200px.svg";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import authActions from "../../redux/auth/actions/authActions";
 import usersActions from "../../redux/users/actions/usersActions";
@@ -11,15 +11,22 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { isLoading, errorMessage } = useSelector((state) => state.userData);
+  const { isLoading, errorMessage, currentUser } = useSelector(
+    (state) => state.authData
+  );
+  useEffect(() => {
+    dispatch(usersActions.clearUserStart());
+  }, [dispatch]);
+
   const handleClick = (e) => {
     e.preventDefault();
     dispatch(authActions.loginUserStart({ email, password }));
   };
 
-  useEffect(() => {
-    dispatch(usersActions.clearUserStart());
-  }, [dispatch]);
+  const history = useHistory();
+  if (currentUser?._id) {
+    history.push("/");
+  }
 
   return (
     <div className="login">

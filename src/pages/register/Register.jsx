@@ -32,7 +32,7 @@ export default function Register() {
 
   if (errorMessage?.slice(0, 7) === '"email"') {
     setTimeout(() => {
-      history.go(0);
+      window.location.reload();
     }, 3000);
   }
 
@@ -90,7 +90,7 @@ export default function Register() {
             </button>
           </form>
         )}
-        <div className="notify" style={{ color: "#FF0000" }}>
+        <div className="notify" style={{ color: "#FF0000", marginTop: "10px" }}>
           {errorMessage}
         </div>
       </div>

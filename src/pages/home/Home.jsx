@@ -25,9 +25,9 @@ const Home = ({ type }) => {
     <div className="home">
       <Navbar />
       <Featured type={type} setGenre={setGenre} />
-      <div className="lists" key={lists}>
+      <div className="lists">
         {lists?.map((list) => (
-          <List list={list} />
+          <List list={list} key={list?._id} />
         ))}
       </div>
       <Footer />
