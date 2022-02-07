@@ -3,15 +3,15 @@ import action from "../redux/auth/actions/authActions";
 import jwt_decode from "jwt-decode";
 import { store } from "../redux/store";
 
-const { REACT_APP_API_URL2 } = process.env;
+const { REACT_APP_API_URL } = process.env;
 
 export const axiosPublic = axios.create({
-  baseURL: REACT_APP_API_URL2,
+  baseURL: REACT_APP_API_URL,
   withCredentials: true,
 });
 
 export const axiosPrivate = axios.create({
-  baseURL: REACT_APP_API_URL2,
+  baseURL: REACT_APP_API_URL,
 });
 
 const refreshToken = async () => {
