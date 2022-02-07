@@ -32,6 +32,11 @@ const logoutUserError = (errorMessage) => ({
   payload: errorMessage,
 });
 
+//CLEAR
+const clearAuthStart = () => ({
+  type: actionType.CLEAR_AUTH_START,
+});
+
 const usersActions = {
   loginUserStart,
   loginUserSuccess,
@@ -39,6 +44,7 @@ const usersActions = {
   logoutUserStart,
   logoutUserSuccess,
   logoutUserError,
+  clearAuthStart,
 };
 
 export default usersActions;

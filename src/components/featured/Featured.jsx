@@ -4,6 +4,7 @@ import "./featured.scss";
 import { useSelector, useDispatch } from "react-redux";
 import action from "../../redux/movies/actions/moviesActions";
 import { axiosPrivate } from "../../server/requestMethods";
+import { Link } from "react-router-dom";
 
 export default function Featured({ type, setGenre }) {
   const { accessToken } = useSelector((state) => state.authData.currentUser);
@@ -48,7 +49,12 @@ export default function Featured({ type, setGenre }) {
         <div className="buttons">
           <button className="play">
             <PlayArrow />
-            <span>Play</span>
+            <Link
+              style={{ textDecoration: "none", color: "var(--main-color)", fontWeight: "500" }}
+              to={{ pathname: "/watch", movie: movieRandom }}
+            >
+              <span>Play</span>
+            </Link>
           </button>
           <button className="more">
             <InfoOutlined />

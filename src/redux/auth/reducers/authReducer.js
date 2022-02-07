@@ -53,6 +53,14 @@ const authReducer = (state = initialState, action) => {
         errorMessage: action.payload,
       };
 
+    //CLEAR
+    case actionType.CLEAR_AUTH_START:
+      return {
+        ...state,
+        currentUser: null,
+        errorMessage: null,
+      };
+
     default:
       return { ...state };
   }

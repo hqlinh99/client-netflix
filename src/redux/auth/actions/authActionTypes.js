@@ -9,6 +9,9 @@ const actionTypes = {
   LOGOUT_USER_SUCCESS: "LOGOUT_USER_SUCCESS",
   LOGOUT_USER_ERROR: "LOGOUT_USER_ERROR",
 
+  //Clear
+  CLEAR_AUTH_START: "CLEAR_AUTH_START",
+
 };
 
 export default actionTypes;

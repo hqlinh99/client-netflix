@@ -10,7 +10,7 @@ import { axiosPrivate } from "../../server/requestMethods";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { currentUser } = useSelector((state) => state.authData);
+  const { currentUser, isLoading } = useSelector((state) => state.authData);
   const userId = currentUser?._id;
   const accessToken = currentUser?.accessToken;
 
@@ -54,7 +54,14 @@ const Navbar = () => {
             <ArrowDropDown className="icon" />
             <div className="options">
               <span>Setting</span>
-              <span onClick={handleLogout}>Logout</span>
+              <span
+                style={{
+                  cursor: isLoading === true ? "wait" : "pointer",
+                }}
+                onClick={handleLogout}
+              >
+                Logout
+              </span>
             </div>
           </div>
         </div>

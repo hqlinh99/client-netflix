@@ -18,6 +18,10 @@ export default function Login() {
     dispatch(usersActions.clearUserStart());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(authActions.clearAuthStart());
+  }, [dispatch]);
+
   const handleClick = (e) => {
     e.preventDefault();
     dispatch(authActions.loginUserStart({ email, password }));
@@ -55,7 +59,11 @@ export default function Login() {
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="loginButton" onClick={handleClick}>
+          <button
+            style={{ cursor: isLoading === true ? "wait" : "default" }}
+            className="loginButton"
+            onClick={handleClick}
+          >
             {isLoading === true ? (
               <img style={{ width: "40px" }} src={Loading} alt="loading..." />
             ) : (

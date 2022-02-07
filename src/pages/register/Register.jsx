@@ -8,7 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function Register() {
   const dispatch = useDispatch();
-  const { isLoading, errorMessage, user } = useSelector((state) => state.userData);
+  const { isLoading, errorMessage, user } = useSelector(
+    (state) => state.userData
+  );
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -65,7 +67,11 @@ export default function Register() {
         {!email ? (
           <div className="inputGetStarted">
             <input type="email" placeholder="email address" ref={emailRef} />
-            <button className="registerButton" onClick={handleStart}>
+            <button
+              style={{ cursor: isLoading === true ? "wait" : "pointer" }}
+              className="registerButton"
+              onClick={handleStart}
+            >
               Get Started
             </button>
           </div>
@@ -81,7 +87,11 @@ export default function Register() {
               placeholder="password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button className="registerButton" onClick={handleFinish}>
+            <button
+              style={{ cursor: isLoading === true ? "wait" : "pointer" }}
+              className="registerButton"
+              onClick={handleFinish}
+            >
               {isLoading === true ? (
                 <img style={{ width: "40px" }} src={Loading} alt="loading..." />
               ) : (
